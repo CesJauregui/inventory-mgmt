@@ -29,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
     public Product createProduct(Product product) {
         Product newProduct = Product.builder()
                 .name(product.getName())
+                .description(product.getDescription())
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .category(product.getCategory())
@@ -45,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product updated = existing.toBuilder()
                 .name(product.getName())
+                .description(product.getDescription())
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .category(product.getCategory())
