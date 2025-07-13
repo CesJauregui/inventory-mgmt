@@ -39,4 +39,15 @@ public interface ProductService {
      * @param id ID del producto a eliminar.
      */
     void deleteProduct(Long id);
+
+    /**
+     * Genera el código SKU al crear un producto
+     * @param name
+     * @param category
+     * @param brand
+     * @param id
+     * @return El código SKU único por producto
+     */
+    String generateCodeSKU(String name, String category, String brand, Long id);
+
 }

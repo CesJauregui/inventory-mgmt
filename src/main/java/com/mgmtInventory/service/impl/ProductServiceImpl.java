@@ -4,9 +4,12 @@ import com.mgmtInventory.model.Product;
 import com.mgmtInventory.repository.ProductRepository;
 import com.mgmtInventory.service.ProductService;
 import lombok.AllArgsConstructor;
+import org.hibernate.id.IncrementGenerator;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -33,10 +36,15 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .category(product.getCategory())
+                .brand(product.getBrand())
                 .image(product.getImage())
                 .build();
 
-        return productRepository.save(newProduct);
+        Product saved = productRepository.save(newProduct);
+
+        saved.setCodeSKU(generateCodeSKU(saved.getName(), saved.getCategory(),saved.getBrand(), saved.getId()));
+
+        return productRepository.save(saved);
     }
 
     @Override
@@ -60,5 +68,19 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id) {
         productRepository.findById(id).
                 ifPresent(product -> productRepository.deleteById(id));
+    }
+
+    @Override
+    public String generateCodeSKU(String name, String category, String brand, Long id) {
+        String nameCode = getAbbreviation(name,3);
+        String categoryCode = getAbbreviation(category, 3);
+        String brandCode = getAbbreviation(brand, 3);
+        String idCode = String.format("%06d", id);
+
+        return nameCode + "-" + categoryCode + "-" + brandCode + "-" + idCode;
+    }
+
+    private String getAbbreviation(String value, int length) {
+        return value.toUpperCase().replaceAll("[^A-Z0-9]", "").substring(0, Math.min(value.length(), length));
     }
 }
