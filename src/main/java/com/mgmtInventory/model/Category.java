@@ -1,5 +1,6 @@
 package com.mgmtInventory.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,20 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "products")
-public class Product {
+@Table(name = "categories")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String codeSKU;
-    private String name;
-    private String description;
-    private Double price;
-    private Integer stock;
-    private String brand;
-    private String image;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    Long id;
+    String name;
 }

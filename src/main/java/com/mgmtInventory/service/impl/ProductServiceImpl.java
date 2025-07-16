@@ -1,15 +1,14 @@
 package com.mgmtInventory.service.impl;
 
+import com.mgmtInventory.model.Category;
 import com.mgmtInventory.model.Product;
+import com.mgmtInventory.repository.CategoryRepository;
 import com.mgmtInventory.repository.ProductRepository;
 import com.mgmtInventory.service.ProductService;
 import lombok.AllArgsConstructor;
-import org.hibernate.id.IncrementGenerator;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -17,6 +16,7 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public List<Product> getAll() {
@@ -30,19 +30,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
+        Category category = categoryRepository.findById(product.getCategory().getId())
+                .orElseThrow(() -> new RuntimeException("Category not found."));
+
         Product newProduct = Product.builder()
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stock(product.getStock())
-                .category(product.getCategory())
+                .category(category)
                 .brand(product.getBrand())
                 .image(product.getImage())
                 .build();
 
         Product saved = productRepository.save(newProduct);
 
-        saved.setCodeSKU(generateCodeSKU(saved.getName(), saved.getCategory(),saved.getBrand(), saved.getId()));
+        saved.setCodeSKU(generateCodeSKU(saved.getName(), saved.getCategory().getName(),saved.getBrand(), saved.getId()));
 
         return productRepository.save(saved);
     }
@@ -58,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .category(product.getCategory())
+                .brand(product.getBrand())
                 .image(product.getImage())
                 .build();
 
