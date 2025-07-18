@@ -1,5 +1,6 @@
 package com.mgmtInventory.service.impl;
 
+import com.mgmtInventory.dto.ResponseCategoryDTO;
 import com.mgmtInventory.model.Category;
 import com.mgmtInventory.repository.CategoryRepository;
 import com.mgmtInventory.service.CategoryService;
@@ -16,8 +17,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> getAll() {
-        return categoryRepository.findAll();
+    public List<ResponseCategoryDTO> getAll() {
+        return categoryRepository.getTotalCategoryByProducts();
     }
 
     @Override

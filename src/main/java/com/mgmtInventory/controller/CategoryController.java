@@ -1,5 +1,6 @@
 package com.mgmtInventory.controller;
 
+import com.mgmtInventory.dto.ResponseCategoryDTO;
 import com.mgmtInventory.model.Category;
 import com.mgmtInventory.service.CategoryService;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> getCategories() {
+    public ResponseEntity<List<ResponseCategoryDTO>> getCategories() {
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.getAll());
     }
 
@@ -39,6 +40,7 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+        categoryService.deleteCategory(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

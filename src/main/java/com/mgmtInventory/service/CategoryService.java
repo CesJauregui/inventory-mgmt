@@ -1,5 +1,6 @@
 package com.mgmtInventory.service;
 
+import com.mgmtInventory.dto.ResponseCategoryDTO;
 import com.mgmtInventory.model.Category;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface CategoryService {
      * Obtiene la lista completa de categorías registradas.
      * @return Lista de categorías.
      */
-    List<Category> getAll();
+    List<ResponseCategoryDTO> getAll();
 
     /**
      * Busca una categoría por su ID único.
