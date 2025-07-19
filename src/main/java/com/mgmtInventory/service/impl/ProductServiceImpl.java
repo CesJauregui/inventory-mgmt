@@ -1,7 +1,9 @@
 package com.mgmtInventory.service.impl;
 
+import com.mgmtInventory.model.Brand;
 import com.mgmtInventory.model.Category;
 import com.mgmtInventory.model.Product;
+import com.mgmtInventory.repository.BrandRepository;
 import com.mgmtInventory.repository.CategoryRepository;
 import com.mgmtInventory.repository.ProductRepository;
 import com.mgmtInventory.service.ProductService;
@@ -17,6 +19,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final BrandRepository brandRepository;
 
     @Override
     public List<Product> getAll() {
@@ -32,6 +35,8 @@ public class ProductServiceImpl implements ProductService {
     public Product createProduct(Product product) {
         Category category = categoryRepository.findById(product.getCategory().getId())
                 .orElseThrow(() -> new RuntimeException("Category not found."));
+        Brand brand = brandRepository.findById(product.getBrand().getId())
+                .orElseThrow(() -> new RuntimeException("Brand not found."));
 
         Product newProduct = Product.builder()
                 .name(product.getName())
@@ -39,13 +44,13 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .stock(product.getStock())
                 .category(category)
-                .brand(product.getBrand())
+                .brand(brand)
                 .image(product.getImage())
                 .build();
 
         Product saved = productRepository.save(newProduct);
 
-        saved.setCodeSKU(generateCodeSKU(saved.getName(), saved.getCategory().getName(),saved.getBrand(), saved.getId()));
+        saved.setCodeSKU(generateCodeSKU(saved.getName(), saved.getCategory().getName(),saved.getBrand().getName(), saved.getId()));
 
         return productRepository.save(saved);
     }

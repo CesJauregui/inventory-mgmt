@@ -23,10 +23,13 @@ public class Product {
     private String description;
     private Double price;
     private Integer stock;
-    private String brand;
     private String image;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 }
