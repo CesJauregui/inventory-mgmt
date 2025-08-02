@@ -11,10 +11,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@Table(name = "brands")
-public class Brand {
+@Table(name = "suppliers")
+public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String RUC;
+    private String contact;
+    private String phone;
+    private String email;
+    private String address;
+    private String city;
+    private String country;
+    private String paymentTerms;
+    private String note;
+    private Boolean active;
 }
